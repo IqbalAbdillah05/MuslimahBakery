@@ -123,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         context,
                         MaterialPageRoute(builder: (context) => LoginApp()),
                       );
-                      // Tambahkan logika pendaftaran Anda di sini
+                      // Add your register logic here
                     },
                     child: Text('Register'),
                   ),
