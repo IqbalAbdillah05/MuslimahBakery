@@ -1,12 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
 class CheckoutScreen extends StatefulWidget {
   final List<Map<String, dynamic>> cart;
 
-  const CheckoutScreen({Key? key, required this.cart}) : super(key: key);
+  const CheckoutScreen({Key? key, required this.cart, required Null Function() onTransactionSuccess}) : super(key: key);
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -44,7 +46,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 setState(() {
                   widget.cart.clear();  // Clear the cart
                 });
-              },
+              }, onTransactionSuccess: () {  },
             ),
           ),
         );
@@ -71,77 +73,69 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Review your order and complete the payment.",
+                'Detail Penerima',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
-                  fontSize: size.width * 0.050,
+                  fontSize: 20,
                 ),
               ),
-              SizedBox(height: size.height * 0.02),
-              Text(
-                "Order Summary:",
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              ...widget.cart.map((item) => Text(
-                "${item['name']} - ${item['qty']} x Rp${item['price']}",
-                style: GoogleFonts.poppins(),
-              )),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Recipient Name',
+                  labelText: 'Nama Penerima',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the recipient name';
+                    return 'Nama Penerima tidak boleh kosong';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _phoneController,
                 decoration: InputDecoration(
-                  labelText: 'Phone Number',
+                  labelText: 'No. Telepon',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the phone number';
+                    return 'No. Telepon tidak boleh kosong';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _addressController,
                 decoration: InputDecoration(
-                  labelText: 'Address',
+                  labelText: 'Alamat Pengiriman',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the address';
+                    return 'Alamat Pengiriman tidak boleh kosong';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _noteController,
                 decoration: InputDecoration(
-                  labelText: 'Note',
+                  labelText: 'Catatan',
                   border: OutlineInputBorder(),
                 ),
+                maxLines: 3,
               ),
-              SizedBox(height: size.height * 0.02),
+              Spacer(),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => _processPayment(context),
+                  onPressed: () {
+                    _processPayment(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
                     elevation: 0,
@@ -150,10 +144,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                   child: Text(
-                    "Confirm Payment",
+                    'Lanjutkan ke Pembayaran',
                     style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontSize: size.height * 0.02,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -175,6 +169,7 @@ class TransactionScreen extends StatefulWidget {
   final String catatan;
   final int orderId;
   final VoidCallback onOrderPlaced;
+  final VoidCallback onTransactionSuccess; // Add callback for transaction success
 
   const TransactionScreen({
     Key? key,
@@ -185,6 +180,7 @@ class TransactionScreen extends StatefulWidget {
     required this.catatan,
     required this.orderId,
     required this.onOrderPlaced,
+    required this.onTransactionSuccess, // Initialize callback
   }) : super(key: key);
 
   @override
@@ -195,47 +191,24 @@ class _TransactionScreenState extends State<TransactionScreen> {
   final List<String> _paymentMethods = ['Bank Transfer'];
   String? _selectedPaymentMethod;
   File? _proofOfPayment;
+  Uint8List? _webProofOfPayment;
 
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Choose Image Source"),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                GestureDetector(
-                  child: Text("Gallery"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _getImageFromSource(ImageSource.gallery);
-                  },
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  child: Text("Camera"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _getImageFromSource(ImageSource.camera);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-  Future<void> _getImageFromSource(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
-      setState(() {
-        _proofOfPayment = File(pickedFile.path);
-      });
+      if (kIsWeb) {
+        final bytes = await pickedFile.readAsBytes();
+        setState(() {
+          _webProofOfPayment = bytes;
+        });
+      } else {
+        setState(() {
+          _proofOfPayment = File(pickedFile.path);
+        });
+      }
     }
   }
 
@@ -250,10 +223,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
   }
 
   void _placeOrder(BuildContext context) {
-    // Place order logic here
     Future.delayed(Duration(seconds: 2), () {
-      final int orderId = widget.orderId;  // Use the provided orderId
-      widget.onOrderPlaced(); // Clear the cart
+      final int orderId = widget.orderId;
+      widget.onOrderPlaced();
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -388,15 +360,22 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           onPressed: _pickImage,
                           child: Text("Upload Bukti Pembayaran"),
                         ),
-                        if (_proofOfPayment != null)
+                        if (_proofOfPayment != null || _webProofOfPayment != null)
                           Column(
                             children: [
                               SizedBox(height: 10),
-                              Image.file(
-                                _proofOfPayment!,
-                                width: 100,
-                                height: 100,
-                              ),
+                              if (kIsWeb && _webProofOfPayment != null)
+                                Image.memory(
+                                  _webProofOfPayment!,
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              if (!kIsWeb && _proofOfPayment != null)
+                                Image.file(
+                                  _proofOfPayment!,
+                                  width: 100,
+                                  height: 100,
+                                ),
                             ],
                           ),
                       ],

@@ -56,4 +56,6 @@ class CartProvider extends ChangeNotifier {
   double get cartSubTotal => getCartTotal();
   //double get shippingCharge => 120;
   double get cartTotal => cartSubTotal ;
+
+  void clearCart() {}
 }

@@ -56,7 +56,7 @@ class _CartItemState extends State<CartItem> {
                 ),
                 SizedBox(height: size.height * 0.005),
                   Text(
-                "\$ ${widget.cartItem.product.price}",
+                "\Rp ${widget.cartItem.product.price}",
                 style: GoogleFonts.poppins(
                   fontSize: size.width * 0.035,
                   color: Colors.black.withOpacity(0.8),
