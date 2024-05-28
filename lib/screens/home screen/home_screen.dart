@@ -7,7 +7,6 @@ import 'package:shopping_provider/screens/main_screen.dart';
 import 'package:shopping_provider/widgets/category_header.dart';
 import 'package:shopping_provider/widgets/product.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -16,14 +15,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-void _logout() {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context)=> LoginPage()),
-  );
-}
-
-
+  void _logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false, // Menonaktifkan interaksi di luar alert dialog
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Konfirmasi Logout'),
+          content: Text('Apakah Anda yakin ingin keluar?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Navigasi ke halaman dashboard jika tombol "Tidak" ditekan
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Text('Tidak'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigasi ke halaman login jika tombol "Iya" ditekan
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Text('Iya'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -59,8 +92,15 @@ void _logout() {
                       ),
                     ],
                   ),
-
-
+                  Row(
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.logout),
+                          onPressed: () {
+                            _showLogoutDialog(context);
+                          }),
+                    ],
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.025),
@@ -68,7 +108,6 @@ void _logout() {
                 width: size.width,
                 child: TextFormField(
                   decoration: InputDecoration(
-
                     focusColor: Colors.black38,
                     isCollapsed: false,
                     hintText: "Search products",
@@ -93,78 +132,82 @@ void _logout() {
               SizedBox(height: size.height * 0.025),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset('assets/f6.jpg',
-                height: size.height * 0.2,
-                width: size.width * 0.999,
-                fit: BoxFit.cover,
+                child: Image.asset(
+                  'assets/f6.jpg',
+                  height: size.height * 0.2,
+                  width: size.width * 0.999,
+                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(height: size.height * 0.030),
               Column(
                 children: [
                   CategoryHeader(
-                    title: "Donat", 
-                    count: '${(Provider.of<ProductProvider>(context).shirts.length.toDouble())}',
-                   // count: 'Rp ${formatCurrency(.shirts.length)}',
+                    title: "Donat",
+                    count:
+                        '${(Provider.of<ProductProvider>(context).shirts.length.toDouble())}',
+                    // count: 'Rp ${formatCurrency(.shirts.length)}',
+                  ),
+                  SizedBox(height: size.height * 0.020),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Consumer<ProductProvider>(
+                      builder: (context, value, child) {
+                        return Row(
+                          children: value.shirts
+                              .map((product) => Product(product: product))
+                              .toList(),
+                        );
+                      },
                     ),
-                    SizedBox(height: size.height * 0.020),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Consumer<ProductProvider>(
-                        builder: (context, value, child) {
-                          return Row(
-                            children: value.shirts
-                            .map((product)=> Product(product: product))
-                            .toList(),
-                          );
-                        },
-                        ),
-                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.020),
               Column(
                 children: [
                   CategoryHeader(
-                    title: "Kue", 
-                    count: '${Provider.of<ProductProvider>(context).shoes.length}',
+                    title: "Kue",
+                    count:
+                        '${Provider.of<ProductProvider>(context).shoes.length}',
                     //count: 'Rp ${formatCurrency(widget.price)}',
+                  ),
+                  SizedBox(height: size.height * 0.020),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Consumer<ProductProvider>(
+                      builder: (context, value, child) {
+                        return Row(
+                          children: value.shoes
+                              .map((product) => Product(product: product))
+                              .toList(),
+                        );
+                      },
                     ),
-                    SizedBox(height: size.height * 0.020),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Consumer<ProductProvider>(
-                        builder: (context, value, child) {
-                          return Row(
-                            children: value.shoes
-                            .map((product)=> Product(product: product))
-                            .toList(),
-                          );
-                        },
-                        ),
-                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.020),
               Column(
                 children: [
                   CategoryHeader(
-                    title: "Roti", 
-                    count: '${Provider.of<ProductProvider>(context).pants.length}',
+                    title: "Roti",
+                    count:
+                        '${Provider.of<ProductProvider>(context).pants.length}',
+                  ),
+                  SizedBox(height: size.height * 0.020),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Consumer<ProductProvider>(
+                      builder: (context, value, child) {
+                        return Row(
+                          children: value.pants
+                              .map((product) => Product(product: product))
+                              .toList(),
+                        );
+                      },
                     ),
-                    SizedBox(height: size.height * 0.020),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Consumer<ProductProvider>(
-                        builder: (context, value, child) {
-                          return Row(
-                            children: value.pants
-                            .map((product)=> Product(product: product))
-                            .toList(),
-                          );
-                        },
-                        ),
-                    ),
+                  ),
                 ],
               ),
             ],
