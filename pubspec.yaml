@@ -40,6 +40,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  google_fonts: ^6.2.1
+  http: ^1.2.1
+  iconsax: ^0.0.8
+  provider: ^6.1.2
+  uuid: ^4.4.0
+  mysql1: ^0.20.0
+  image_picker: ^0.8.4+8
+  file_picker: ^4.3.6
+  shared_preferences: ^2.0.8
+  money_formatter: ^0.0.6
+  intl: ^0.19.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
