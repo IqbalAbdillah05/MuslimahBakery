@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:muslimahbakery/models/cart_model.dart';
+import 'package:muslimahbakery/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_provider/models/cart_model.dart';
-import 'package:shopping_provider/provider/cart_provider.dart';
+
 
 class CartItem extends StatefulWidget {
   final CartModel cartItem;

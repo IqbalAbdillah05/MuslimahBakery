@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_provider/models/cart_model.dart';
-import 'package:shopping_provider/models/product_model.dart';
+import 'package:muslimahbakery/models/cart_model.dart';
+import 'package:muslimahbakery/models/product_model.dart';
 
 
 

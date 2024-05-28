@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:muslimahbakery/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_provider/provider/cart_provider.dart';
+
 
 class OrderDetailsScreen extends StatelessWidget {
   const OrderDetailsScreen({super.key});

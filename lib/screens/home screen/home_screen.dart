@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:muslimahbakery/provider/product_provider.dart';
+import 'package:muslimahbakery/screens/login%20screen/login_screen.dart';
+import 'package:muslimahbakery/screens/main_screen.dart';
+import 'package:muslimahbakery/widgets/category_header.dart';
+import 'package:muslimahbakery/widgets/product.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_provider/provider/product_provider.dart';
-import 'package:shopping_provider/screens/login%20screen/login_screen.dart';
-import 'package:shopping_provider/screens/main_screen.dart';
-import 'package:shopping_provider/widgets/category_header.dart';
-import 'package:shopping_provider/widgets/product.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_provider/screens/main_screen.dart';
-import 'package:shopping_provider/screens/register%20screen/register_screen.dart';
+import 'package:muslimahbakery/screens/main_screen.dart';
+import 'package:muslimahbakery/screens/register%20screen/register_screen.dart';
+
 
 void main() {
   runApp(LoginApp());

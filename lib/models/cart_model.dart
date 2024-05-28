@@ -1,4 +1,4 @@
-import 'package:shopping_provider/models/product_model.dart';
+import 'package:muslimahbakery/models/product_model.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = const Uuid();

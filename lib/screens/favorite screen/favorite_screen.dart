@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:muslimahbakery/models/product_model.dart';
+import 'package:muslimahbakery/provider/product_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_provider/models/product_model.dart';
-import 'package:shopping_provider/provider/product_provider.dart';
 
 class FavortieScreen extends StatefulWidget {
   const FavortieScreen({super.key});
