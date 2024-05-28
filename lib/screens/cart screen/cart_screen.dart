@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,6 +6,7 @@ import 'package:muslimahbakery/screens/cart%20screen/checkout.dart';
 import 'package:muslimahbakery/widgets/cart_item.dart';
 import 'package:provider/provider.dart';
 
+import 'package:intl/intl.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -16,6 +16,15 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  String formatCurrency(double amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp',
+      decimalDigits: 0,
+    );
+    return formatter.format(amount);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -82,7 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Order Info",
+                            "Informasi Pemesanan",
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: size.width * 0.040,
@@ -97,7 +106,7 @@ class _CartScreenState extends State<CartScreen> {
                                 style: GoogleFonts.poppins(),
                               ),
                               Text(
-                                "Rp${context.watch<CartProvider>().cartSubTotal}",
+                                formatCurrency(context.watch<CartProvider>().cartSubTotal),
                                 style: GoogleFonts.poppins(),
                               ),
                             ],
@@ -111,7 +120,7 @@ class _CartScreenState extends State<CartScreen> {
                                 style: GoogleFonts.poppins(),
                               ),
                               Text(
-                                "Rp${context.watch<CartProvider>().cartTotal}",
+                                formatCurrency(context.watch<CartProvider>().cartTotal),
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -152,7 +161,7 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Checkout (Rp${context.watch<CartProvider>().cartTotal})",
+                                  "Checkout (${formatCurrency(context.watch<CartProvider>().cartTotal)})",
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: size.height * 0.02,
@@ -173,3 +182,4 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 }
+
