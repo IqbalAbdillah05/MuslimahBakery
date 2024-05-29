@@ -7,8 +7,13 @@ import 'dart:typed_data';
 
 class CheckoutScreen extends StatefulWidget {
   final List<Map<String, dynamic>> cart;
+  final VoidCallback onTransactionSuccess;
 
-  const CheckoutScreen({Key? key, required this.cart, required Null Function() onTransactionSuccess}) : super(key: key);
+  const CheckoutScreen({
+    Key? key,
+    required this.cart,
+    required this.onTransactionSuccess,
+  }) : super(key: key);
 
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
@@ -46,7 +51,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 setState(() {
                   widget.cart.clear();  // Clear the cart
                 });
-              }, onTransactionSuccess: () {  },
+              },
+              onTransactionSuccess: widget.onTransactionSuccess,
             ),
           ),
         );
@@ -169,7 +175,7 @@ class TransactionScreen extends StatefulWidget {
   final String catatan;
   final int orderId;
   final VoidCallback onOrderPlaced;
-  final VoidCallback onTransactionSuccess; // Add callback for transaction success
+  final VoidCallback onTransactionSuccess;
 
   const TransactionScreen({
     Key? key,
@@ -180,7 +186,7 @@ class TransactionScreen extends StatefulWidget {
     required this.catatan,
     required this.orderId,
     required this.onOrderPlaced,
-    required this.onTransactionSuccess, // Initialize callback
+    required this.onTransactionSuccess,
   }) : super(key: key);
 
   @override
@@ -226,6 +232,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     Future.delayed(Duration(seconds: 2), () {
       final int orderId = widget.orderId;
       widget.onOrderPlaced();
+      widget.onTransactionSuccess();  // Call this to indicate transaction success
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -408,4 +415,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: CheckoutScreen(
+      cart: [],
+      onTransactionSuccess: () {},
+    ),
+  ));
 }
