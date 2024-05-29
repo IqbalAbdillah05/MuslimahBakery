@@ -4,6 +4,7 @@ import 'package:muslimahbakery/models/product_model.dart';
 
 
 
+
 class CartProvider extends ChangeNotifier {
   final List<CartModel> _shoppingCart = [];
 
@@ -54,8 +55,7 @@ class CartProvider extends ChangeNotifier {
 
   List<CartModel> get shoppingCart => _shoppingCart;
   double get cartSubTotal => getCartTotal();
-  //double get shippingCharge => 120;
-  double get cartTotal => cartSubTotal ;
+  double get cartTotal => cartSubTotal;
 
   void clearCart() {}
 }

@@ -63,7 +63,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           'Checkout',
           style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
         ),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.amber,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -137,7 +137,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     _processPayment(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
+                    backgroundColor: Colors.amber,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -146,7 +146,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: Text(
                     'Lanjutkan ke Pembayaran',
                     style: GoogleFonts.poppins(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -251,7 +251,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaction Details'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.orange,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -386,16 +386,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 child: ElevatedButton(
                   onPressed: () => _placeOrder(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
+                    backgroundColor: Colors.orange,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                   child: Text(
-                    'Place Order',
+                    'Tambah Pesanan',
                     style: GoogleFonts.poppins(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
