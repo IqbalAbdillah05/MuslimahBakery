@@ -9,6 +9,7 @@ class Transaction {
   final List<Map<String, dynamic>> cart;
   final double total;
   final Uint8List? proofOfPayment;
+  String status;
 
   Transaction({
     required this.orderId,
@@ -19,5 +20,6 @@ class Transaction {
     required this.cart,
     required this.total,
     this.proofOfPayment,
+    required this.status,
   });
 }

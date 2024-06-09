@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart'; // Import NumberFormat
 import 'package:muslimahbakery/models/product_model.dart';
 import 'package:muslimahbakery/provider/product_provider.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +86,8 @@ class _FavortieScreenState extends State<FavortieScreen> {
                 itemCount: favoriteProducts.length,
                 itemBuilder: (context, index){
                   final product = favoriteProducts[index];
+                  // Format harga menjadi mata uang Rupiah
+                  final priceFormatted = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp').format(product.price);
                   return Container(
                     width: double.infinity,
                     height: 140,
@@ -121,7 +124,7 @@ class _FavortieScreenState extends State<FavortieScreen> {
                            child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("\$ ${product.price}",
+                              Text(priceFormatted, // Menggunakan harga yang sudah diformat
                               style: GoogleFonts.poppins(
                                 color: Colors.grey,
                                 fontSize: size.width * 0.040

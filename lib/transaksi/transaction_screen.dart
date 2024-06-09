@@ -93,7 +93,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
       note: widget.catatan,
       cart: widget.cart,
       total: calculateSubtotal(),
-      proofOfPayment: kIsWeb ? _webProofOfPayment : _proofOfPayment?.readAsBytesSync(),
+      proofOfPayment: kIsWeb ? _webProofOfPayment : _proofOfPayment?.readAsBytesSync(), status: '',
     );
 
     // Add transaction to provider
@@ -130,7 +130,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaction Details'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.orange,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -195,7 +195,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                "Total: Rp${calculateSubtotal().toStringAsFixed(2)}",
+                "Total: Rp${calculateSubtotal().toStringAsFixed(0)}",
                 style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
@@ -265,7 +265,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 child: ElevatedButton(
                   onPressed: () => _placeOrder(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
+                    backgroundColor: Colors.orange,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),

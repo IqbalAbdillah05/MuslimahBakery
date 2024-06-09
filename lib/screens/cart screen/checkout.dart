@@ -46,7 +46,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           address: address,
           note: note,
           cart: widget.cart,
-          total: total,
+          total: total, status: '',
         );
         Provider.of<TransactionProvider>(context, listen: false).addTransaction(transaction);
 

@@ -10,4 +10,18 @@ class TransactionProvider with ChangeNotifier {
     _transactions.add(transaction);
     notifyListeners();
   }
+
+  void markOrderAsCompleted(Transaction transaction) {
+    // Temukan indeks pesanan yang sesuai dalam daftar
+    final index = _transactions.indexWhere((t) => t.orderId == transaction.orderId);
+    
+    // Periksa apakah pesanan ditemukan
+    if (index != -1) {
+      // Tandai pesanan sebagai selesai
+      _transactions[index].status = 'Selesai';
+      
+      // Panggil notifyListeners untuk memberitahu widget bahwa ada perubahan dalam data
+      notifyListeners();
+    }
+  }
 }
