@@ -3,6 +3,7 @@ import 'package:muslimahbakery/provider/cart_provider.dart';
 import 'package:muslimahbakery/provider/product_provider.dart';
 import 'package:muslimahbakery/screens/login%20screen/login_screen.dart';
 import 'package:muslimahbakery/themes/theme.dart';
+import 'package:muslimahbakery/transaksi/transaction_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -11,6 +12,7 @@ void main() {
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_)=> ProductProvider()),
       ChangeNotifierProvider(create: (_)=> CartProvider()),
+      ChangeNotifierProvider(create: (_) => TransactionProvider()),
     ],
     child: MyApp(),
     ),

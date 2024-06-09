@@ -6,6 +6,7 @@ import 'package:muslimahbakery/screens/cart%20screen/cart_screen.dart';
 import 'package:muslimahbakery/screens/favorite%20screen/favorite_screen.dart';
 import 'package:muslimahbakery/screens/home%20screen/home_screen.dart';
 import 'package:muslimahbakery/screens/order%20screen/order_screen.dart';
+//import 'package:muslimahbakery/screens/order%20screen/order_screen.dart';
 import 'package:muslimahbakery/screens/profile%20screen/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     FavortieScreen(),
     CartScreen(),
-    OrderScreen(), 
+    OrdersScreen(), 
     ProfilePage(),
   ];
 

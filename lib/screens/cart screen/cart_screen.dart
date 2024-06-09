@@ -149,7 +149,7 @@ class _CartScreenState extends State<CartScreen> {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.indigo,
+                                backgroundColor: Colors.orange,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide.none,
