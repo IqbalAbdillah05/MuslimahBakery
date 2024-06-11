@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muslimahbakery/screens/main_screen.dart';
 import 'package:muslimahbakery/screens/register%20screen/register_screen.dart';
-
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(LoginApp());
@@ -31,23 +32,43 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final String _validUsername = 'user';
-  final String _validPassword = '123';
-
   bool _obscurePassword = true;
 
-  void _login() {
+  Future<void> _login() async {
+    final String url = 'http://localhost/login.php'; // Ganti dengan URL endpoint login.php
+
     final String username = _usernameController.text;
     final String password = _passwordController.text;
 
-    if (username == _validUsername && password == _validPassword) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'username': username,
+          'password': password,
+        },
       );
-    } else {
+
+      if (response.statusCode == 200) {
+        final responseData = response.body;
+        final parsedData = jsonDecode(responseData);
+
+        if (parsedData['message'] == 'Login successful') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreen()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(parsedData['message'])),
+          );
+        }
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid username or password')),
+        SnackBar(content: Text('Error: $e')),
       );
     }
   }

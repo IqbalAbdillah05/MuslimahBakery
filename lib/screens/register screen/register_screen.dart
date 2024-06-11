@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:muslimahbakery/screens/login%20screen/login_screen.dart';
-
 
 void main() {
   runApp(RegisterApp());
@@ -32,6 +32,71 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
+
+  Future<void> registerUser() async {
+    final String url = 'http://localhost/register.php'; // Ganti dengan URL endpoint register.php
+
+    // Buat objek body dalam format form-urlencode
+    final body = {
+      'username': _usernameController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      'no_telp': _phoneController.text,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: body, // Gunakan objek body langsung, tanpa perlu mengonversi ke JSON
+      );
+
+      if (response.statusCode == 200) {
+        // Jika registrasi berhasil, lanjutkan ke layar login atau tampilkan pesan sukses
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginApp()), // Ganti LoginApp() menjadi LoginScreen()
+        );
+      } else {
+        // Jika registrasi gagal, tampilkan pesan kesalahan
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Registration failed'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      // Tampilkan pesan kesalahan jika terjadi error
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('An error occurred: $e'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 20.0),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginApp()),
-                      );
-                      // Add your register logic here
+                      registerUser(); // Panggil fungsi registerUser saat tombol ditekan
                     },
                     child: Text('Register'),
                   ),
